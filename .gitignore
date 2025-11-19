@@ -1,1 +1,6 @@
-/venv
+# Qodo (formerly CodiumAI)
+.qodo/
+
+# OS
+.DS_Store
+Thumbs.db
