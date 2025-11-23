@@ -5,7 +5,9 @@ class ApiService {
   static const String productionUrl =
       'https://github.com/BirasaDivine/Maternal_Health_Risk_Mobile-App-Regression/tree/main';
 
-  static const String localUrl = 'http://localhost:8000';
+  // Use 10.0.2.2 for Android Emulator (points to host machine's localhost)
+  // Use localhost for web/desktop
+  static const String localUrl = 'http://10.0.2.2:8000';
 
   static const bool useProduction = false;
 
