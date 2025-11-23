@@ -9,8 +9,8 @@ import os
 
 # Initialize FastAPI with metadata
 app = FastAPI(
-    title="Regression Model Prediction API",
-    description="API for making predictions using a trained regression model (Decision Tree/Linear Regression)",
+    title="Systolic Blood Pressure Prediction API",
+    description="API for predicting Systolic Blood Pressure using maternal health data",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -98,13 +98,13 @@ class PredictionOutput(BaseModel):
     """
     Output schema for prediction responses.
     """
-    prediction: float = Field(..., description="The predicted value from the regression model")
+    prediction: int = Field(..., description="Predicted Systolic Blood Pressure in mmHg")
     status: str = Field(default="success", description="Status of the prediction")
     
     class Config:
         schema_extra = {
             "example": {
-                "prediction": 78.45,
+                "prediction": 120,
                 "status": "success"
             }
         }
@@ -117,7 +117,7 @@ def read_root():
     Root endpoint providing API information.
     """
     return {
-        "message": "Welcome to the Regression Model Prediction API",
+        "message": "Welcome to the Systolic Blood Pressure Prediction API",
         "docs": "/docs",
         "redoc": "/redoc",
         "version": "1.0.0"
@@ -146,7 +146,7 @@ def predict(features_dict):
         features_dict: Dictionary containing feature values
         
     Returns:
-        Predicted value as float
+        Predicted Systolic Blood Pressure as integer (whole number)
     """
     if model is None or scaler is None or feature_columns is None:
         raise HTTPException(
@@ -163,14 +163,15 @@ def predict(features_dict):
     # Make prediction
     prediction = model.predict(features_scaled)[0]
     
-    return float(prediction)
+    # Round to whole number for blood pressure
+    return int(round(prediction))
 
 
 # API endpoint for predictions (POST request)
 @app.post("/predict", response_model=PredictionOutput, tags=["Prediction"])
 def predict_endpoint(input_data: PredictionInput):
     """
-    Make a prediction using the trained regression model.
+    Predict Systolic Blood Pressure based on maternal health vitals.
     
     Parameters:
     - **Age**: Patient age in years (0-120)
@@ -180,7 +181,7 @@ def predict_endpoint(input_data: PredictionInput):
     - **HeartRate**: Heart rate in beats per minute (30-200)
     
     Returns:
-    - **prediction**: The predicted value
+    - **prediction**: Predicted Systolic Blood Pressure (whole number in mmHg)
     - **status**: Status of the prediction
     """
     try:

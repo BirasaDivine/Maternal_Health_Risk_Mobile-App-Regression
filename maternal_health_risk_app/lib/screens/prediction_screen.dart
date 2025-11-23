@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maternal_health_risk_app/constants/colors.dart';
 import 'package:maternal_health_risk_app/widgets/custom_text_field.dart';
+import 'package:maternal_health_risk_app/services/api_service.dart';
 
 class PredictionScreen extends StatefulWidget {
   const PredictionScreen({super.key});
@@ -55,14 +56,36 @@ class _PredictionScreenState extends State<PredictionScreen> {
       _predictionResult = null;
     });
 
-    // TODO: Replace with actual API call
-    // Simulating API call for now
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      // Parse input values
+      final age = double.parse(_ageController.text);
+      final diastolicBP = double.parse(_diastolicBPController.text);
+      final bs = double.parse(_bsController.text);
+      final bodyTemp = double.parse(_bodyTempController.text);
+      final heartRate = double.parse(_heartRateController.text);
 
-    setState(() {
-      _isLoading = false;
-      _predictionResult = "Risk Level: Medium (Sample Result)";
-    });
+      // Make API call
+      final result = await ApiService.makePrediction(
+        age: age,
+        diastolicBP: diastolicBP,
+        bs: bs,
+        bodyTemp: bodyTemp,
+        heartRate: heartRate,
+      );
+
+      // Extract prediction value
+      final prediction = result['prediction'];
+
+      setState(() {
+        _isLoading = false;
+        _predictionResult = 'Predicted Systolic BP: $prediction mmHg';
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    }
   }
 
   @override
@@ -70,7 +93,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Maternal Health Risk',
+          'Systolic BP Prediction',
           style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.white),
         ),
         centerTitle: true,
@@ -111,7 +134,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                           ),
                           const SizedBox(height: 12),
                           const Text(
-                            'Health Risk Predictor',
+                            'Systolic BP Predictor',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -120,7 +143,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Enter patient vitals to predict maternal health risk',
+                            'Enter patient vitals to predict Systolic Blood Pressure',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
