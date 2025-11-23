@@ -1,7 +1,8 @@
 # Maternal Health Risk Prediction System
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/BirasaDivine/Maternal_Health_Risk_Mobile-App-Regression/blob/main/MobileApp_Regression_Analysis.ipynb)
-[![Watch Demo](https://img.shields.io/badge/YouTube-Demo%20Video-red?logo=youtube)](https://youtu.be/LuNbloHh5YY)
+
+[Demo Video](https://youtu.be/LuNbloHh5YY)
 
 > **AI-Powered Systolic Blood Pressure Prediction for Maternal Health Monitoring**
 
