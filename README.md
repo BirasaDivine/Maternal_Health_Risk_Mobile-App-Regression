@@ -1,6 +1,7 @@
 # Maternal Health Risk Prediction System
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/BirasaDivine/Maternal_Health_Risk_Mobile-App-Regression/blob/main/MobileApp_Regression_Analysis.ipynb)
+[![Watch Demo](https://img.shields.io/badge/YouTube-Demo%20Video-red?logo=youtube)](https://youtu.be/LuNbloHh5YY)
 
 > **AI-Powered Systolic Blood Pressure Prediction for Maternal Health Monitoring**
 
@@ -212,11 +213,19 @@ Try the API directly in your browser!
 
 ### Prerequisites
 
-- Python 3.9+
-- Flutter SDK 3.9+
-- Git
+Before you begin, ensure you have the following installed:
 
-### Clone the Repository
+- **Python 3.9+** - [Download Python](https://www.python.org/downloads/)
+- **Flutter SDK 3.9+** - [Install Flutter](https://docs.flutter.dev/get-started/install)
+- **Git** - [Download Git](https://git-scm.com/downloads)
+- **Android Studio** (for Android Emulator) or **Xcode** (for iOS Simulator on Mac)
+- **VS Code** or **Android Studio** (recommended IDEs)
+
+### Step-by-Step Setup Guide
+
+---
+
+### **Step 1: Clone the Repository**
 
 ```bash
 git clone https://github.com/BirasaDivine/Maternal_Health_Risk_Mobile-App-Regression.git
@@ -225,59 +234,300 @@ cd Maternal_Health_Risk_Mobile-App-Regression
 
 ---
 
-### Train the Model
+### **Step 2: Set Up the Backend API**
 
-#### Open Jupyter Notebook
-
-```bash
-jupyter notebook MobileApp_Regression_Analysis.ipynb
-```
-
-#### Or Run in Google Colab
-
-Click the "Open in Colab" badge at the top of this README`
-
----
-
-### Run API Locally
-
-#### Navigate to Backend
+#### 2.1 Navigate to Backend Directory
 
 ```bash
 cd Backend
 ```
 
-#### Install Dependencies
+#### 2.2 Create a Virtual Environment (Optional but Recommended)
+
+**Windows:**
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**macOS/Linux:**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+#### 2.3 Install Python Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-#### Place Model File
+**Required packages:**
 
-Ensure `model.pkl` is in the `Backend/` directory
+- fastapi>=0.104.1
+- pydantic>=2.5.0
+- uvicorn[standard]>=0.24.0
+- numpy>=1.24.0
+- scikit-learn>=1.3.0
+- python-multipart>=0.0.6
+
+#### 2.4 Verify Model File
+
+Ensure `model.pkl` exists in the `Backend/` directory. This file contains the trained Decision Tree model.
+
+#### 2.5 Start the API Server
+
+**For Web/Desktop Testing:**
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+**For Android Emulator Testing:**
+
+```bash
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+You should see:
+
+```
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process
+INFO:     Application startup complete.
+```
+
+**Test the API:**
+
+- Open browser: `http://localhost:8000/docs`
+- You should see the Swagger UI interactive documentation
+
+**Keep this terminal running!** The API must stay active for the mobile app to work.
 
 ---
 
-### Run Mobile App
+### **Step 3: Set Up the Flutter Mobile App**
 
-#### Navigate to Flutter App
+#### 3.1 Open a New Terminal
+
+Keep the API server running in the first terminal. Open a **new terminal** for the Flutter app.
+
+#### 3.2 Navigate to Flutter Directory
 
 ```bash
 cd maternal_health_risk_app
 ```
 
-#### Install Dependencies
+(If you're in the Backend folder, use: `cd ../maternal_health_risk_app`)
+
+#### 3.3 Install Flutter Dependencies
 
 ```bash
 flutter pub get
 ```
 
-#### Test the App
+You should see:
 
-1. Enter patient vitals
-2. Click "Predict"
-3. See Systolic BP prediction
+```
+Running "flutter pub get" in maternal_health_risk_app...
+Resolving dependencies...
+Got dependencies!
+```
+
+#### 3.4 Verify Flutter Installation
+
+```bash
+flutter doctor
+```
+
+Fix any issues reported (especially Android/iOS setup).
+
+#### 3.5 Choose Your Testing Platform
+
+**Option A: Android Emulator**
+
+1. Open Android Studio
+2. Go to **Tools → Device Manager**
+3. Create/Start an Android Virtual Device (AVD)
+4. Wait for emulator to fully boot
+
+**Option B: Physical Android Device**
+
+1. Enable **Developer Options** on your phone
+2. Enable **USB Debugging**
+3. Connect via USB
+4. Run `flutter devices` to verify connection
+
+**Option C: Web Browser (Chrome)**
+
+No additional setup needed!
+
+**Option D: iOS Simulator (macOS only)**
+
+```bash
+open -a Simulator
+```
+
+#### 3.6 Run the Flutter App
+
+**For Android Emulator or Physical Device:**
+
+```bash
+flutter run
+```
+
+**For Web (Chrome):**
+
+```bash
+flutter run -d chrome
+```
+
+**For iOS Simulator:**
+
+```bash
+flutter run -d ios
+```
+
+Flutter will build and launch the app. This may take 2-3 minutes on first run.
+
+---
+
+### **Step 4: Test the Application**
+
+#### 4.1 Using the Mobile App
+
+1. **Enter Patient Data:**
+
+   - Age: `30` years
+   - Diastolic BP: `80` mmHg
+   - Blood Sugar: `8.5` mmol/L
+   - Body Temp: `98.6` °F
+   - Heart Rate: `75` bpm
+
+2. **Click "Predict" Button**
+
+3. **View Result:**
+   - You should see: "Predicted Systolic BP: 120 mmHg"
+
+#### 4.2 Test Validation
+
+Try entering invalid data:
+
+- Age: `200` (out of range 0-120)
+- You should see error messages in red
+
+#### 4.3 Using Swagger UI
+
+1. Open browser: `http://localhost:8000/docs`
+2. Click on **POST /predict**
+3. Click **"Try it out"**
+4. Enter test data:
+
+```json
+{
+  "Age": 28.0,
+  "DiastolicBP": 75.0,
+  "BS": 7.5,
+  "BodyTemp": 98.2,
+  "HeartRate": 70.0
+}
+```
+
+5. Click **"Execute"**
+6. Check response: Should return predicted Systolic BP
+
+---
+
+### **Step 5: Train the Model (Optional)**
+
+If you want to retrain the model:
+
+#### 5.1 Install Jupyter
+
+```bash
+pip install jupyter notebook
+```
+
+#### 5.2 Open Notebook
+
+```bash
+jupyter notebook MobileApp_Regression_Analysis.ipynb
+```
+
+#### 5.3 Run All Cells
+
+- Click **Kernel → Restart & Run All**
+- Wait for training to complete
+- New `model.pkl` will be generated
+
+**Or use Google Colab:**
+Click the "Open in Colab" badge at the top of this README
+
+---
+
+### **Troubleshooting**
+
+#### API Connection Issues
+
+**Problem:** "Network error: Unable to connect to server"
+
+**Solutions:**
+
+1. **Verify API is running:**
+
+   - Check terminal shows: `Uvicorn running on http://0.0.0.0:8000`
+
+2. **For Android Emulator:**
+
+   - API must use `--host 0.0.0.0`
+   - Flutter app uses `http://10.0.2.2:8000`
+
+3. **For Web/Desktop:**
+
+   - API can use default `127.0.0.1:8000`
+   - Flutter app uses `http://localhost:8000`
+
+4. **Check firewall:**
+   - Allow Python through Windows Firewall
+
+#### Flutter Build Issues
+
+**Problem:** "Gradle build failed"
+
+**Solutions:**
+
+```bash
+flutter clean
+flutter pub get
+flutter run
+```
+
+**Problem:** "SDK version conflict"
+
+**Solution:**
+Update Flutter:
+
+```bash
+flutter upgrade
+```
+
+#### Model Loading Errors
+
+**Problem:** "Model not found"
+
+**Solution:**
+
+- Ensure `model.pkl` is in `Backend/` folder
+- File size should be ~20KB
+- Retrain if corrupted
+
+---
+
+### **Running in Production**
+
+For deployment to Render or other cloud platforms, see the deployment section in this README
 
 ---
 
