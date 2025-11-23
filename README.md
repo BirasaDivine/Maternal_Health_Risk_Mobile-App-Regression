@@ -94,18 +94,18 @@ Our solution requires only:
 
 We trained and compared three regression models:
 
-| Model             | MSE ↓     | MAE ↓    | R² Score ↑ |
-| ----------------- | --------- | -------- | ---------- |
-| **Decision Tree** | **~13.1** | **~0.7** | **~0.95**  |
-| Random Forest     | ~15       | ~1.9     | ~0.95      |
-| Linear Regression | ~122.2    | ~8.9     | ~0.62      |
+| Model                   | MSE ↓     | MAE ↓    | R² Score ↑ |
+| ----------------------- | --------- | -------- | ---------- |
+| **Decision Tree**       | **~14.1** | **~0.8** | **~0.95**  |
+| Random Forest           | ~15.6     | ~1.8     | ~0.95      |
+| Linear Regression (SGD) | ~122.1    | ~8.9     | ~0.62      |
 
 ### Why Decision Tree is the Best Model
 
 #### 1. **Lowest Prediction Error**
 
-- **MSE: 13.1** - Lowest mean squared error among all models, indicating superior prediction precision
-- **MAE: 0.7 mmHg** - Minimal average error, demonstrating consistent accuracy
+- **MSE: 14.1** - Lowest mean squared error among all models, indicating superior prediction precision
+- **MAE: 0.8 mmHg** - Minimal average error, demonstrating consistent accuracy
 - **R² Score: 0.95** - Explains 95% of variance in Systolic BP predictions
 
 ### Real-World Application
@@ -303,8 +303,6 @@ _Clear display of predicted Systolic BP with success indicator_
 
 </div>
 
-
-
 ## Visualizations
 
 ### 1. Correlation Heatmap
@@ -356,23 +354,23 @@ _Clear display of predicted Systolic BP with success indicator_
 **Training Impact Visualization**:
 
 - **Before Training**: Predictions are random with no relationship to actual values
-- **After Training**: Predictions form a linear pattern, closely aligned with actual values
-- **Regression Line**: Shows the strong correlation between predicted and actual Systolic BP
+- **After Training**: Linear Regression with SGD shows improved predictions aligned with actual values
+- **Regression Line**: Shows the correlation between predicted and actual Systolic BP using gradient descent optimization
 
 **Key Metrics**:
 
 | Phase  | Pattern        | R² Score | MSE   | Prediction Quality |
 | ------ | -------------- | -------- | ----- | ------------------ |
 | Before | Random scatter | ~0.00    | High  | No correlation     |
-| After  | Linear trend   | 0.95     | 13.1  | High accuracy      |
+| After  | Linear trend   | 0.62     | 122.1 | Moderate accuracy  |
 
 **Model Performance Evidence**:
 
-- **95% variance explained** by the trained Decision Tree model
-- **Lowest MSE of 13.1** demonstrates superior prediction accuracy compared to other models
-- Predictions cluster tightly around the ideal 45° line (perfect prediction)
-- Minimal deviation from actual values (MAE = 0.7 mmHg)
-- Demonstrates effective learning from training data
+- **62% variance explained** by the Linear Regression (SGD) model
+- SGD optimizer demonstrates iterative learning through gradient descent
+- Shows the baseline performance of linear models
+- Higher MSE (122.1) and MAE (8.9 mmHg) compared to tree-based models
+- Demonstrates why Decision Tree (MSE: 14.1) performs significantly better for this dataset
 
 ---
 
@@ -451,6 +449,8 @@ Maternal_Health_Risk_Mobile-App-Regression/
 ├── Maternal Health Risk Data Set.csv # Dataset
 ├── .gitignore # Global Git ignore
 └── README.md # This file
+
+```
 
 ```
 
